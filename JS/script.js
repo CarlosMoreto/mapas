@@ -1,70 +1,76 @@
-async function initializeMap() {
-	try {
-		var map = undefined;        
-		const urlMap = '" & [dax_txt_urlMap] & "';
-		const shapeFile = await Load_JSON(urlMap);
+document.getElementById('test').innerHTML = 'Carregando...';
 
-		if(map != undefined)
-			map.remove();
+Sleep(1000).then(() => {
+	(async function initializeMap() {
+		try {
+			var map = undefined;        
+			const urlMap = '" & [dax_txt_urlMap] & "';
+			const shapeFile = await Load_JSON(urlMap);
 
-		map = L.map('map', {
-			zoomControl: false,
-			zoomSnap: 0.1
-		});
+			if(map != undefined)
+				map.remove();
 
-		const feature = L.geoJson(shapeFile);
-		const mapBounds = feature.getBounds();
-		const ctrlScale = L.control.scale({ imperial: false, position: 'bottomright' });
+			map = L.map('map', {
+				zoomControl: false,
+				zoomSnap: 0.1
+			});
 
-		ctrlScale.addTo(map);
-		const divScale = ctrlScale.getContainer().parentElement;
+			const feature = L.geoJson(shapeFile);
+			const mapBounds = feature.getBounds();
+			const ctrlScale = L.control.scale({ imperial: false, position: 'bottomright' });
 
-		divScale.style.position = 'absolute';
-		divScale.style.margin = 'auto';
-		divScale.style.bottom = '0';
-		divScale.style.right = '5%';
-		divScale.style.translate = '0px 20px';
+			ctrlScale.addTo(map);
+			const divScale = ctrlScale.getContainer().parentElement;
 
-		map.fitBounds(mapBounds);
+			divScale.style.position = 'absolute';
+			divScale.style.margin = 'auto';
+			divScale.style.bottom = '0';
+			divScale.style.right = '5%';
+			divScale.style.translate = '0px 20px';
 
-		const minZoom = map.getZoom();
-		map.setMinZoom(minZoom);
-		map.setMaxBounds(mapBounds);
-		map.on('drag', function() {
-			map.panInsideBounds(mapBounds, {animate: false});
-		});
+			map.fitBounds(mapBounds);
 
-		geojson = L.geoJson(shapeFile, {
-			style: Style,
-			onEachFeature: On_Each_Feature
-		}).addTo(map);
+			const minZoom = map.getZoom();
+			map.setMinZoom(minZoom);
+			map.setMaxBounds(mapBounds);
+			map.on('drag', function() {
+				map.panInsideBounds(mapBounds, {animate: false});
+			});
 
-		const legend = L.control({position: 'bottomleft'});
-		legend.onAdd = function() {
-			const div = L.DomUtil.create('div', 'info legend');
-			const labels = [];
-			const ary_values = [minVal];
+			geojson = L.geoJson(shapeFile, {
+				style: Style,
+				onEachFeature: On_Each_Feature
+			}).addTo(map);
 
-			for (let i = 1; i <= ary_mapColors.length; i++)
-				ary_values[i] = ary_values[i - 1] + step;
+			const legend = L.control({position: 'bottomleft'});
+			legend.onAdd = function() {
+				const div = L.DomUtil.create('div', 'info legend');
+				const labels = [];
+				const ary_values = [minVal];
 
-			ary_values[0] = ary_values[0] - 1;
-			ary_values[ary_values.length - 1] = maxVal;
-			div.innerHTML = '<span class=""title"">Legenda</span><br>';
+				for (let i = 1; i <= ary_mapColors.length; i++)
+					ary_values[i] = ary_values[i - 1] + step;
 
-			for (let i = 0; i < ary_values.length - 1; i++) {
-				div.innerHTML +=
-					`<i style=""background:${ary_mapColors[i]}""></i> ` +
-					`${ary_values[i] + 1} &ndash; ${ary_values[i + 1]}<br><br>`;
-			}
+				ary_values[0] = ary_values[0] - 1;
+				ary_values[ary_values.length - 1] = maxVal;
+				div.innerHTML = '<span class=""title"">Legenda</span><br>';
 
-			return div;
-		};
+				for (let i = 0; i < ary_values.length - 1; i++) {
+					div.innerHTML +=
+						`<i style=""background:${ary_mapColors[i]}""></i> ` +
+						`${ary_values[i] + 1} &ndash; ${ary_values[i + 1]}<br><br>`;
+				}
 
-		legend.addTo(map);
+				return div;
+			};
 
-	} catch (error) {
-		document.getElementById('test').innerHTML = 'Error loading the GeoJSON file: ' + error;
-		console.error('Error loading the GeoJSON file:', error);
-	}
-}
+			legend.addTo(map);
+
+		} catch (error) {
+			document.getElementById('test').innerHTML = 'Error loading the GeoJSON file: ' + error;
+			console.error('Error loading the GeoJSON file:', error);
+		}
+	})();
+	
+	document.getElementById('test').innerHTML = '';
+});
