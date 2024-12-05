@@ -86,7 +86,7 @@ function Get_Color(cod) {
 //                     STYLE - 2024-12-05                      \\
 // =========================================================== \\
 function Style(feature) {
-    const color = Get_Color(feature.properties[codName]);
+    const color = Get_Color(feature.properties[geoLvlCod]);
 
     return {
         fillColor: color,
