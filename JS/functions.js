@@ -2,6 +2,21 @@
 //                       FUNCTIONS - 2024-12-05                        \\
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: \\
 // =========================================================== \\
+//                 CREATE COMPASS - 2024-12-05                 \\
+// =========================================================== \\
+function Create_Compass() {
+	let imgCompass = document.createElement('img');
+	
+	imgCompass.id = 'compass';
+	imgCompass.src = 'https://raw.githubusercontent.com/CarlosMoreto/mapas/refs/heads/main/Icons/compass.png';
+	imgCompass.style.opacity = 1;
+	
+	document.getElementById('map').appendChild(imgCompass);
+}
+// =========================================================== \\
+
+
+// =========================================================== \\
 //                     SLEEP - 2024-11-25                      \\
 // =========================================================== \\
 function Sleep(ms) {
