@@ -39,6 +39,7 @@
     position: absolute;
     bottom: 0px;
     right: 0px;
+	transition: opacity 3s;
 }
 
 .leaflet-control-scale {
