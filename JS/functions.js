@@ -167,11 +167,11 @@ function Tooltip_Message(dict) {
 
 
 // =========================================================== \\
-//                ON EACH FEATURE - 2024-12-04                 \\
+//                ON EACH FEATURE - 2024-12-05                 \\
 // =========================================================== \\
 function On_Each_Feature(feature, layer) {
     //document.getElementById('test').innerHTML += 'test, '; //feature.properties." & SELECTEDVALUE(d_geoLevel[txt_levelCol]) & " + ', ';
-    const dict = Get_Value_Dict(feature.properties." & SELECTEDVALUE(d_geoLevel[txt_levelCol]) & ");
+    const dict = Get_Value_Dict(feature.properties[codName]);
     
     if(dict.cod !== 0) {
         layer.bindTooltip(Tooltip_Message(dict), {className: 'anim-tooltip'});
