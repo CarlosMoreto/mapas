@@ -4,7 +4,7 @@
 // =========================================================== \\
 //                 CREATE COMPASS - 2024-12-05                 \\
 // =========================================================== \\
-function Create_Compass() {
+export function Create_Compass() {
 	let imgCompass = document.createElement('img');
 	
 	imgCompass.id = 'compass';
@@ -43,9 +43,9 @@ function Load_JSON(url) {
 
 
 // =========================================================== \\
-//                    GET MIN - 2024-11-26                     \\
+//                    GET MIN - 2024-12-05                     \\
 // =========================================================== \\
-function Get_Min(val) {
+export function Get_Min(val) {
     let size = 10**Math.trunc(Math.log10(val));
     let minVal = size * Math.floor(val / size);
 
@@ -55,9 +55,9 @@ function Get_Min(val) {
 
 
 // =========================================================== \\
-//                    GET MAX - 2024-11-26                     \\
+//                    GET MAX - 2024-12-05                     \\
 // =========================================================== \\
-function Get_Max(val) {
+export function Get_Max(val) {
     let size = 10**Math.trunc(Math.log10(val));
     let maxSize = size * Math.ceil(val / size);
 
