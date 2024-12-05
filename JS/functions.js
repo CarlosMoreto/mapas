@@ -170,7 +170,7 @@ function Tooltip_Message(dict) {
 // =========================================================== \\
 function On_Each_Feature(feature, layer) {
     //document.getElementById('test').innerHTML += 'test, '; //feature.properties." & SELECTEDVALUE(d_geoLevel[txt_levelCol]) & " + ', ';
-    const dict = Get_Value_Dict(feature.properties[codName]);
+    const dict = Get_Value_Dict(feature.properties[geoLvlCod]);
     
     if(dict.cod !== 0) {
         layer.bindTooltip(Tooltip_Message(dict), {className: 'anim-tooltip'});
