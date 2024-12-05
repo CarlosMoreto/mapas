@@ -83,10 +83,10 @@ function Get_Color(cod) {
 
 
 // =========================================================== \\
-//                     STYLE - 2024-12-04                      \\
+//                     STYLE - 2024-12-05                      \\
 // =========================================================== \\
 function Style(feature) {
-    const color = Get_Color(feature.properties." & SELECTEDVALUE(d_geoLevel[txt_levelCol]) & ");
+    const color = Get_Color(feature.properties[codName]);
 
     return {
         fillColor: color,
