@@ -1,10 +1,8 @@
 ﻿#test {
-    font: 14pt Arial;
-    font-weight: bold;
+    font: 12pt Arial;
     position: absolute;
-    text-align: center;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    left: 0;
     z-index: 10;
 }
 
