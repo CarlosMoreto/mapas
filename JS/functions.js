@@ -146,19 +146,18 @@ function Zoom_To_Feature(e) {
 
 
 // =========================================================== \\
-//                TOOLTIP MESSAGE - 2024-11-27                 \\
+//                TOOLTIP MESSAGE - 2024-12-05                 \\
 // =========================================================== \\
 function Tooltip_Message(dict) {
-    let calc = '" & SELECTEDVALUE(p_calc[abv_calc]) & "';
     let value = dict['val'];
 
-    if(calc == 'num_profs')
+    if(calcAbv == 'num_profs')
         value = (value).toLocaleString('pt-BR', {maximumFractionDigits: 0});
     else
         value = (value).toLocaleString('pt-BR', {maximumFractionDigits: 2});
 
-    let msgLocal = '" & SELECTEDVALUE(d_geoLevel[txt_levelName]) & ": ' + dict['txt'];
-    let msgValue = '" & SELECTEDVALUE(p_calc[txt_calc]) & ": ' + value;
+    let msgLocal = geoLvlName + ': ' + dict.txt;
+    let msgValue = calcName + ': ' + value;
     let msg = msgLocal + '<br>' + msgValue;
 
     return msg;
