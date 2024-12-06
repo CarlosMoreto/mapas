@@ -26,19 +26,21 @@ function Sleep(ms) {
 
 
 // =========================================================== \\
-//                   LOAD JSON - 2024-12-04                    \\
+//                   LOAD JSON - 2024-12-06                    \\
 // =========================================================== \\
 function Load_JSON(url) {
     return new Promise((resolve, reject) => {
-    $.ajax({
-        type: 'GET',
-        url: url,
-        dataType: 'json',
-        success: resolve,
-        error: reject
+		$.ajax({
+			type: "GET",
+			url: url,
+			crossDomain: true,
+			contentType: "application/json; charset=ISO-8859-1",
+			dataType: "json",
+			success: resolve,
+			error: reject
+		});
     });
-    });
-    }
+}
 // =========================================================== \\
 
 
