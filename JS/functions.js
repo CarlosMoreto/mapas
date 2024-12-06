@@ -177,7 +177,7 @@ function Tooltip_Message(dict) {
     } else
         value = 'NA';
 
-    let msgCod = 'Código: ' + dict.cod;
+    let msgCod = 'CÃ³digo: ' + dict.cod;
     let msgLocal = geoLvlName + ': ' + dict.txt;
     let msgValue = calcName + ': ' + value;
     let msg = msgCod + '<br>' + msgLocal + '<br>' + msgValue;
