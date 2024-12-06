@@ -1,76 +1,76 @@
 document.getElementById('test').innerHTML = 'Carregando...';
 
 Sleep(1000).then(() => {
-	(async function initializeMap() {
-		try {
-			var map = undefined;        
-			const urlMap = '" & [dax_txt_urlMap] & "';
-			const shapeFile = await Load_JSON(urlMap);
+	Create_Compass();
+	try {
+		(async function initializeMap() {
+			try {
+				var map = L.map('map', {
+					zoomControl: false,
+					zoomSnap: 0.1
+				});
+				
+				const urlMap = '" & [dax_txt_urlMap] & "';
+				const shapeFile = await Load_JSON(urlMap);
+				const feature = L.geoJson(shapeFile);
+				const mapBounds = feature.getBounds();
+				const ctrlScale = L.control.scale({ imperial: false, position: 'bottomright' });
 
-			if(map != undefined)
-				map.remove();
+				ctrlScale.addTo(map);
+				const divScale = ctrlScale.getContainer().parentElement;
 
-			map = L.map('map', {
-				zoomControl: false,
-				zoomSnap: 0.1
-			});
+				divScale.style.position = 'absolute';
+				divScale.style.margin = 'auto';
+				divScale.style.bottom = '0';
+				divScale.style.right = '5%';
+				divScale.style.translate = '0px 20px';
 
-			const feature = L.geoJson(shapeFile);
-			const mapBounds = feature.getBounds();
-			const ctrlScale = L.control.scale({ imperial: false, position: 'bottomright' });
+				map.fitBounds(mapBounds);
 
-			ctrlScale.addTo(map);
-			const divScale = ctrlScale.getContainer().parentElement;
+				const minZoom = map.getZoom();
+				map.setMinZoom(minZoom);
+				map.setMaxBounds(mapBounds);
+				map.on('drag', function() {
+					map.panInsideBounds(mapBounds, {animate: false});
+				});
 
-			divScale.style.position = 'absolute';
-			divScale.style.margin = 'auto';
-			divScale.style.bottom = '0';
-			divScale.style.right = '5%';
-			divScale.style.translate = '0px 20px';
+				geojson = L.geoJson(shapeFile, {
+					style: Style,
+					onEachFeature: On_Each_Feature
+				}).addTo(map);
 
-			map.fitBounds(mapBounds);
+				const legend = L.control({position: 'bottomleft'});
+				legend.onAdd = function() {
+					const div = L.DomUtil.create('div', 'info legend');
+					const labels = [];
+					const ary_values = [minVal];
 
-			const minZoom = map.getZoom();
-			map.setMinZoom(minZoom);
-			map.setMaxBounds(mapBounds);
-			map.on('drag', function() {
-				map.panInsideBounds(mapBounds, {animate: false});
-			});
+					for (let i = 1; i <= ary_mapColors.length; i++)
+						ary_values[i] = ary_values[i - 1] + step;
 
-			geojson = L.geoJson(shapeFile, {
-				style: Style,
-				onEachFeature: On_Each_Feature
-			}).addTo(map);
+					ary_values[0] = ary_values[0] - 1;
+					ary_values[ary_values.length - 1] = maxVal;
+					div.innerHTML = '<span class=""title"">Legenda</span><br>';
 
-			const legend = L.control({position: 'bottomleft'});
-			legend.onAdd = function() {
-				const div = L.DomUtil.create('div', 'info legend');
-				const labels = [];
-				const ary_values = [minVal];
+					for (let i = 0; i < ary_values.length - 1; i++) {
+						div.innerHTML +=
+							`<i style=""background:${ary_mapColors[i]}""></i> ` +
+							`${ary_values[i] + 1} &ndash; ${ary_values[i + 1]}<br><br>`;
+					}
 
-				for (let i = 1; i <= ary_mapColors.length; i++)
-					ary_values[i] = ary_values[i - 1] + step;
+					return div;
+				};
 
-				ary_values[0] = ary_values[0] - 1;
-				ary_values[ary_values.length - 1] = maxVal;
-				div.innerHTML = '<span class=""title"">Legenda</span><br>';
+				legend.addTo(map);
 
-				for (let i = 0; i < ary_values.length - 1; i++) {
-					div.innerHTML +=
-						`<i style=""background:${ary_mapColors[i]}""></i> ` +
-						`${ary_values[i] + 1} &ndash; ${ary_values[i + 1]}<br><br>`;
-				}
-
-				return div;
-			};
-
-			legend.addTo(map);
-
-		} catch (error) {
-			document.getElementById('test').innerHTML = 'Error loading the GeoJSON file: ' + error;
-			console.error('Error loading the GeoJSON file:', error);
-		}
-	})();
-	
-	document.getElementById('test').innerHTML = '';
+			} catch(error) {
+				document.getElementById('test').innerHTML = 'Error loading the GeoJSON file: ' + error.message;
+				console.error('Error loading the GeoJSON file:', error);
+			}
+		})();
+		
+		document.getElementById('test').innerHTML = '';
+	} catch(error) {
+		document.getElementById('test').innerHTML = 'Error initializing map: ' + error;
+	}
 });

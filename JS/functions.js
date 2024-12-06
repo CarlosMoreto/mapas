@@ -1,5 +1,5 @@
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: \\
-//                       FUNCTIONS - 2024-12-05                        \\
+//                       FUNCTIONS - 2024-12-06                        \\
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: \\
 // =========================================================== \\
 //                 CREATE COMPASS - 2024-12-05                 \\
@@ -31,11 +31,10 @@ function Sleep(ms) {
 function Load_JSON(url) {
     return new Promise((resolve, reject) => {
 		$.ajax({
-			type: "GET",
+			type: 'GET',
 			url: url,
 			crossDomain: true,
-			contentType: "application/json; charset=ISO-8859-1",
-			dataType: "json",
+			dataType: 'json',
 			success: resolve,
 			error: reject
 		});
@@ -45,25 +44,27 @@ function Load_JSON(url) {
 
 
 // =========================================================== \\
-//                    GET MIN - 2024-12-05                     \\
+//                    GET MIN - 2024-12-06                     \\
 // =========================================================== \\
-function Get_Min(val) {
-    let size = 10**Math.trunc(Math.log10(val));
-    let minVal = size * Math.floor(val / size);
+function Get_Min(values) {
+    let minVal = Math.min(...values.filter(val => val !== undefined));
+    let size = 10**Math.trunc(Math.log10(minVal));
+    let minValFinal = size * Math.floor(minVal / size);
 
-    return minVal < 10 ? 0 : minVal;
+    return minValFinal < 10 ? 0 : minValFinal;
 }
 // =========================================================== \\
 
 
 // =========================================================== \\
-//                    GET MAX - 2024-12-05                     \\
+//                    GET MAX - 2024-12-06                     \\
 // =========================================================== \\
-function Get_Max(val) {
-    let size = 10**Math.trunc(Math.log10(val));
-    let maxSize = size * Math.ceil(val / size);
+function Get_Max(values) {
+    let maxVal = Math.max(...values.filter(val => val !== undefined));
+    let size = 10**Math.trunc(Math.log10(maxVal));
+    let maxSizeFinal = size * Math.ceil(maxVal / size);
 
-    return maxSize;
+    return maxSizeFinal;
 }
 // =========================================================== \\
 
@@ -83,12 +84,12 @@ function Get_Value_Dict(cod) {
 
 
 // =========================================================== \\
-//                   GET COLOR - 2024-12-05                    \\
+//                   GET COLOR - 2024-12-06                    \\
 // =========================================================== \\
 function Get_Color(cod) {
     const dic_local = Get_Value_Dict(cod);
  
-    if(dic_local.cod !== 0) {
+    if(dic_local.cod !== 0 && dic_local.val !== undefined) {
         const idx = Math.trunc((dic_local.val - minVal) / step);
 
         return ary_mapColors[idx];
@@ -107,7 +108,7 @@ function Style(feature) {
 
     return {
         fillColor: color,
-        weight: 1,
+        weight: 0.5,
         opacity: 1,
         color: '#AAA',
         dashArray: '',
@@ -163,19 +164,23 @@ function Zoom_To_Feature(e) {
 
 
 // =========================================================== \\
-//                TOOLTIP MESSAGE - 2024-12-05                 \\
+//                TOOLTIP MESSAGE - 2024-12-06                 \\
 // =========================================================== \\
 function Tooltip_Message(dict) {
-    let value = dict['val'];
+    let value = dict.val;
 
-    if(calcAbv == 'num_profs')
-        value = (value).toLocaleString('pt-BR', {maximumFractionDigits: 0});
-    else
-        value = (value).toLocaleString('pt-BR', {maximumFractionDigits: 2});
+    if(value !== undefined) {
+        if(calcAbv == 'num_profs')
+            value = (value).toLocaleString('pt-BR', {maximumFractionDigits: 0});
+        else
+            value = (value).toLocaleString('pt-BR', {maximumFractionDigits: 2});
+    } else
+        value = 'NA';
 
+    let msgCod = 'Código: ' + dict.cod;
     let msgLocal = geoLvlName + ': ' + dict.txt;
     let msgValue = calcName + ': ' + value;
-    let msg = msgLocal + '<br>' + msgValue;
+    let msg = msgCod + '<br>' + msgLocal + '<br>' + msgValue;
 
     return msg;
 }
